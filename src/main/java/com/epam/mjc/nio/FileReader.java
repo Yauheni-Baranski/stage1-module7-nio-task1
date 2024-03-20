@@ -1,14 +1,14 @@
 
 package com.epam.mjc.nio;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+import java.util.logging.Logger;
 
 public class FileReader {
-
+    private static final Logger logger = Logger.getLogger(FileReader.class.getName());
     public Profile getDataFromFile(File file) {
         Profile profile = new Profile();
 
@@ -34,28 +34,20 @@ public class FileReader {
                         profile.setName(value);
                         break;
                     case "Age":
-                        try {
-                            System.out.println("Parsing age: " + value); // Print the value
-                            profile.setAge(Integer.parseInt(value));
-                        } catch (NumberFormatException e) {
-                            e.printStackTrace();
-                        }
+                        profile.setAge(Integer.parseInt(value));
                         break;
                     case "Email":
                         profile.setEmail(value);
                         break;
                     case "Phone":
-                        try {
-                            System.out.println("Parsing phone: " + value); // Print the value
-                            profile.setPhone(Long.parseLong(value));
-                        } catch (NumberFormatException e) {
-                            e.printStackTrace();
-                        }
+                        profile.setPhone(Long.parseLong(value));
                         break;
+                    default:
+                        logger.warning("Not correct data");
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.severe(e.getMessage());
         }
         return profile;
     }
